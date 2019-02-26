@@ -12,10 +12,16 @@ class MoviesController < ApplicationController
 
   def index
     @movies = Movie.order(params[:sort_by])
-    @sort = params[:sort_by]
+    @sort = params[:sort_by] || session[:sort_by]
     
-    @all_ratings = Movie.all_ratings
-    @selectedratings = params[:ratings]
+    @all_ratings = Movie.all_ratings || session[:ratings]
+    
+    session[:sort] = @sort
+    session[:all_ratings] = @all_ratings
+    
+    if params[:sort_by] != session[:sort_by]
+    flash.keep
+    end
     
   end
 
